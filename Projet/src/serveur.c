@@ -61,6 +61,15 @@ int renvoie_message(int client_socket_fd, char *data) {
   }
 }
 
+int renvoie_nom(int client_socket_fd, char *data) {
+  int data_size = write (client_socket_fd, (void *) data, strlen(data));
+      
+  if (data_size < 0) {
+    perror("erreur ecriture");
+    return(EXIT_FAILURE);
+  }
+}
+
 /* accepter la nouvelle connection d'un client et lire les données
  * envoyées par le client. En suite, le serveur envoie un message
  * en retour
@@ -106,6 +115,9 @@ int recois_envoie_message(int socketfd) {
     strcpy(data, "message: ");
     strcat(data, message);
     renvoie_message(client_socket_fd, data);
+  }
+  else if (strcmp(code, "nom:") == 0) {
+    renvoie_nom(client_socket_fd, data);
   }
   else {
     plot(data);

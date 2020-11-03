@@ -57,6 +57,36 @@ int envoie_recois_message(int socketfd) {
   return 0;
 }
 
+int envoie_nom_de_client(int socketfd) {
+ 
+  char data[1024];
+  // la réinitialisation de l'ensemble des données
+  memset(data, 0, sizeof(data));
+  strcpy(data, "nom: ");
+  strcat(data, "ouiClient");
+  
+  int write_status = write(socketfd, data, strlen(data));
+  if ( write_status < 0 ) {
+    perror("erreur ecriture");
+    exit(EXIT_FAILURE);
+  }
+
+  // la réinitialisation de l'ensemble des données
+  memset(data, 0, sizeof(data));
+
+
+  // lire les données de la socket
+  int read_status = read(socketfd, data, sizeof(data));
+  if ( read_status < 0 ) {
+    perror("erreur lecture");
+    return -1;
+  }
+
+  printf("Message recu: %s\n", data);
+ 
+  return 0;
+}
+
 void analyse(char *pathname, char *data) {
   //compte de couleurs
   couleur_compteur *cc = analyse_bmp_image(pathname);
@@ -126,8 +156,9 @@ int main(int argc, char **argv) {
     perror("connection serveur");
     exit(EXIT_FAILURE);
   }
-  envoie_recois_message(socketfd);
+  //envoie_recois_message(socketfd);
   //envoie_couleurs(socketfd, argv[1]);
+  envoie_nom_de_client(socketfd);
 
   close(socketfd);
 }
