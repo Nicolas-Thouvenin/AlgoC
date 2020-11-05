@@ -57,8 +57,41 @@ int envoie_recois_message(int socketfd) {
   return 0;
 }
 
-int envoie_nom_de_client(int socketfd) {
+int envoie_operateur_numeros(int socketfd) {
  
+  char data[1024];
+  // la réinitialisation de l'ensemble des données
+  memset(data, 0, sizeof(data));
+  strcpy(data, "calcule :");
+  char message[100];
+  printf("Votre calcule(operateur nombre1 nombre 2) : ");
+  fgets(message, 1024, stdin);
+  strcpy(data, "calcule:");
+  strcat(data, message);
+  
+  int write_status = write(socketfd, data, strlen(data));
+  if ( write_status < 0 ) {
+    perror("erreur ecriture");
+    exit(EXIT_FAILURE);
+  }
+
+  // la réinitialisation de l'ensemble des données
+  memset(data, 0, sizeof(data));
+
+
+  // lire les données de la socket
+  int read_status = read(socketfd, data, sizeof(data));
+  if ( read_status < 0 ) {
+    perror("erreur lecture");
+    return -1;
+  }
+
+  printf("Message recu: %s\n", data);
+ 
+  return 0;
+}
+
+int envoie_nom_de_client(int socketfd){
   char data[1024];
   // la réinitialisation de l'ensemble des données
   memset(data, 0, sizeof(data));
@@ -158,7 +191,7 @@ int main(int argc, char **argv) {
   }
   //envoie_recois_message(socketfd);
   //envoie_couleurs(socketfd, argv[1]);
-  envoie_nom_de_client(socketfd);
-
+  //envoie_nom_de_client(socketfd);
+  envoie_operateur_numeros(socketfd);
   close(socketfd);
 }
