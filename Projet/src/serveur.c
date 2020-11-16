@@ -112,18 +112,27 @@ int recois_envoie_message(int socketfd) {
     renvoie_message(client_socket_fd, data);
   }
   else if (strcmp(code, "calcul:") == 0){
-    printf("coucou %s", data);
     char operateur[1];
-    int n1;
-    int n2;
-    sscanf(data, "%s %s %d %d", code, operateur, &n1, &n2);
-    printf("%d %s %d", n1, operateur, n2);
+    float n1;
+    float n2;
+    sscanf(data, "%s %s %f %f", code, operateur, &n1, &n2);
+    float res;
     if (strcmp(operateur, "+") == 0){
-      float res = n1 + n2;
-      char array[10];
-      sprintf(array, "%f", res);
-      strcat(data, array);
+      res = n1 + n2;
     }
+    else if (strcmp(operateur, "*") == 0){
+      res = n1 * n2;
+    }
+    else if (strcmp(operateur, "-") == 0){
+      res = n1 - n2;
+    }
+    else{
+      res = n1 / n2;
+    }
+    char sRes[10];
+    sprintf(sRes, "%f", res);
+    strcat(data, sRes);
+    
     renvoie_message(client_socket_fd, data);
   }
   else {
