@@ -61,6 +61,17 @@ int renvoie_message(int client_socket_fd, char *data) {
   }
 }
 
+int renvoie_couleurs(int client_socket_fd, char *data) {
+  char code[10];
+  int nbCouleurs;
+  char numbers[1000];
+  sscanf(data, "%s %d %s", code, &nbCouleurs, numbers);
+  printf("numbers : %s", numbers);
+  /*for(int i = 0; i < nbCouleurs; i++){
+
+  }*/
+}
+
 /* accepter la nouvelle connection d'un client et lire les données
  * envoyées par le client. En suite, le serveur envoie un message
  * en retour
@@ -96,7 +107,6 @@ int recois_envoie_message(int socketfd) {
   printf ("Message recu: %s\n", data);
   char code[10];
   sscanf(data, "%s", code);
-  printf("%s", code);
 
   //Si le message commence par le mot: 'message:' 
   if (strcmp(code, "message:") == 0) {
@@ -125,6 +135,9 @@ int recois_envoie_message(int socketfd) {
       strcat(data, array);
     }
     renvoie_message(client_socket_fd, data);
+  }
+  else if(strcmp(code, "couleurs:") == 0){
+    renvoie_couleurs(client_socket_fd, data);
   }
   else {
     plot(data);
