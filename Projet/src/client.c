@@ -21,26 +21,23 @@
  * Il faut un argument : l'identifiant de la socket
  */
 
-int envoie_recois_message(int socketfd) {
- 
+int envoyeur_recepteur_avec_msg(int socketfd, char msg[100], char code[10]){
   char data[1024];
   // la réinitialisation de l'ensemble des données
   memset(data, 0, sizeof(data));
 
-
-  // Demandez à l'utilisateur d'entrer un message
   char message[100];
-  printf("Votre message (max 1000 caracteres): ");
+  printf("%s", msg);
   fgets(message, 1024, stdin);
-  strcpy(data, "message: ");
+  strcpy(data, code);
   strcat(data, message);
+  printf("Data to send : %s", data);
   
   int write_status = write(socketfd, data, strlen(data));
   if ( write_status < 0 ) {
     perror("erreur ecriture");
     exit(EXIT_FAILURE);
   }
-
   // la réinitialisation de l'ensemble des données
   memset(data, 0, sizeof(data));
 
@@ -53,142 +50,26 @@ int envoie_recois_message(int socketfd) {
   }
 
   printf("Message recu: %s\n", data);
- 
   return 0;
+}
+
+int envoie_recois_message(int socketfd) {
+  return envoyeur_recepteur_avec_msg(socketfd, "Votre message (max 1000 caracteres): ", "message: ");
 }
 
 int envoie_operateur_numeros(int socketfd) {
- 
-  char data[1024];
-  // la réinitialisation de l'ensemble des données
-  memset(data, 0, sizeof(data));
-  
-  char message[100];
-  printf("Votre calcul (operateur nombre1 nombre 2) : ");
-  fgets(message, 1024, stdin);
-  strcpy(data, "calcul: ");
-  strcat(data, message);
-  printf("%s", data);
-  
-  int write_status = write(socketfd, data, strlen(data));
-  if ( write_status < 0 ) {
-    perror("erreur ecriture");
-    exit(EXIT_FAILURE);
-  }
-
-  // la réinitialisation de l'ensemble des données
-  memset(data, 0, sizeof(data));
-
-
-  // lire les données de la socket
-  int read_status = read(socketfd, data, sizeof(data));
-  if ( read_status < 0 ) {
-    perror("erreur lecture");
-    return -1;
-  }
-
-  printf("Message recu: %s\n", data);
- 
-  return 0;
+  return envoyeur_recepteur_avec_msg(socketfd, "Votre calcul (operateur nombre1 nombre 2) : ", "calcul: ");
 }
 
 int envoie_couleurs_tache1(int socketfd) {
- 
-  char data[1024];
-  // la réinitialisation de l'ensemble des données
-  memset(data, 0, sizeof(data));
-  
-  char message[100];
-  printf("Vos couleurs (nbCouleur, #couleur1, #couleur2 ...) : ");
-  fgets(message, 1024, stdin);
-  strcpy(data, "couleurs: ");
-  strcat(data, message);
-  printf("%s", data);
-  
-  int write_status = write(socketfd, data, strlen(data));
-  if ( write_status < 0 ) {
-    perror("erreur ecriture");
-    exit(EXIT_FAILURE);
-  }
-
-  // la réinitialisation de l'ensemble des données
-  memset(data, 0, sizeof(data));
-
-
-  // lire les données de la socket
-  int read_status = read(socketfd, data, sizeof(data));
-  if ( read_status < 0 ) {
-    perror("erreur lecture");
-    return -1;
-  }
-
-  printf("Message recu: %s\n", data);
- 
-  return 0;
+  return envoyeur_recepteur_avec_msg(socketfd, "Vos couleurs (nbCouleur, #couleur1, #couleur2 ...) : ", "couleurs: ");
 }
 int envoie_balises(int socketfd) {
- 
-  char data[1024];
-  // la réinitialisation de l'ensemble des données
-  memset(data, 0, sizeof(data));
-  
-  char message[100];
-  printf("Vos balises (nbBalise, #Balise1, #Balise2 ...) : ");
-  fgets(message, 1024, stdin);
-  strcpy(data, "balises: ");
-  strcat(data, message);
-  printf("%s", data);
-  
-  int write_status = write(socketfd, data, strlen(data));
-  if ( write_status < 0 ) {
-    perror("erreur ecriture");
-    exit(EXIT_FAILURE);
-  }
-
-  // la réinitialisation de l'ensemble des données
-  memset(data, 0, sizeof(data));
-
-
-  // lire les données de la socket
-  int read_status = read(socketfd, data, sizeof(data));
-  if ( read_status < 0 ) {
-    perror("erreur lecture");
-    return -1;
-  }
-
-  printf("Message recu: %s\n", data);
- 
-  return 0;
+  return envoyeur_recepteur_avec_msg(socketfd, "Vos balises (nbBalise, #Balise1, #Balise2 ...) : ", "balises: ");
 }
 
-
 int envoie_nom_de_client(int socketfd){
-  char data[1024];
-  // la réinitialisation de l'ensemble des données
-  memset(data, 0, sizeof(data));
-  strcpy(data, "nom: ");
-  strcat(data, "ouiClient");
-  
-  int write_status = write(socketfd, data, strlen(data));
-  if ( write_status < 0 ) {
-    perror("erreur ecriture");
-    exit(EXIT_FAILURE);
-  }
-
-  // la réinitialisation de l'ensemble des données
-  memset(data, 0, sizeof(data));
-
-
-  // lire les données de la socket
-  int read_status = read(socketfd, data, sizeof(data));
-  if ( read_status < 0 ) {
-    perror("erreur lecture");
-    return -1;
-  }
-
-  printf("Message recu: %s\n", data);
- 
-  return 0;
+  return envoyeur_recepteur_avec_msg(socketfd, "Veuillez entrer le nom de votre machine : ", "nom: ");
 }
 
 void analyse(char *pathname, char *data) {
@@ -260,11 +141,26 @@ int main(int argc, char **argv) {
     perror("connection serveur");
     exit(EXIT_FAILURE);
   }
-  //envoie_recois_message(socketfd);
-  //envoie_couleurs(socketfd, argv[1]);
-  //envoie_nom_de_client(socketfd);
-  //envoie_operateur_numeros(socketfd);
-  //envoie_couleurs_tache1(socketfd);
-  envoie_balises(socketfd);
+  char toExe[10];
+  printf("Choisissez votre action : \n");
+  printf("a : message\n");
+  printf("b : nom client\n");
+  printf("c : calcul\n");
+  printf("d : couleurs\n");
+  printf("e : balises\n");
+  fgets(toExe, 10, stdin);
+  printf("%s", toExe);
+  if(strncmp(toExe, "a", 1) == 0)
+    envoie_recois_message(socketfd);
+  else if(strncmp(toExe, "b", 1) == 0)
+    envoie_nom_de_client(socketfd);
+  else if(strncmp(toExe, "c", 1) == 0)
+    envoie_operateur_numeros(socketfd);
+  else if(strncmp(toExe, "d", 1) == 0)
+    envoie_couleurs_tache1(socketfd);
+  else if(strncmp(toExe, "e", 1) == 0)
+    envoie_balises(socketfd);
+  else
+    //envoie_couleurs(socketfd, argv[1]);
   close(socketfd);
 }

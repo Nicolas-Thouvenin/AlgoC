@@ -89,7 +89,7 @@ int renvoie_balises(int client_socket_fd, char *data) {
   
   FILE * fp;
   char * token = strtok(numbers, ", #");
-  char fichier[20] = "./Balises.txt";
+  char fichier[20] = "./balises.txt";
   fp = fopen (fichier ,"w");
   for(int i = 0; i < nbBalises; i++){
     fprintf(fp, "#%s\n",token);
@@ -99,6 +99,30 @@ int renvoie_balises(int client_socket_fd, char *data) {
   
   strcpy(data, "Enregistrement dans : ");
   strcat(data, fichier);
+  return renvoie_message(client_socket_fd, data);
+}
+int renvoie_calcul(int client_socket_fd, char *data) {
+  char operateur[1];
+  char code[10];
+  float n1;
+  float n2;
+  sscanf(data, "%s %s %f %f", code, operateur, &n1, &n2);
+  float res;
+  if (strcmp(operateur, "+") == 0){
+    res = n1 + n2;
+  }
+  else if (strcmp(operateur, "*") == 0){
+    res = n1 * n2;
+  }
+  else if (strcmp(operateur, "-") == 0){
+    res = n1 - n2;
+  }
+  else{
+    res = n1 / n2;
+  }
+  char sRes[10];
+  sprintf(sRes, "%f", res);
+  strcat(data, sRes);
   return renvoie_message(client_socket_fd, data);
 }
 
@@ -151,29 +175,8 @@ int recois_envoie_message(int socketfd) {
   else if (strcmp(code, "nom:") == 0) {
     renvoie_message(client_socket_fd, data);
   }
-  else if (strcmp(code, "calcul:") == 0){
-    char operateur[1];
-    float n1;
-    float n2;
-    sscanf(data, "%s %s %f %f", code, operateur, &n1, &n2);
-    float res;
-    if (strcmp(operateur, "+") == 0){
-      res = n1 + n2;
-    }
-    else if (strcmp(operateur, "*") == 0){
-      res = n1 * n2;
-    }
-    else if (strcmp(operateur, "-") == 0){
-      res = n1 - n2;
-    }
-    else{
-      res = n1 / n2;
-    }
-    char sRes[10];
-    sprintf(sRes, "%f", res);
-    strcat(data, sRes);
-    
-    renvoie_message(client_socket_fd, data);
+  else if (strcmp(code, "calcul:") == 0){ 
+    renvoie_calcul(client_socket_fd, data);
   }
   else if(strcmp(code, "couleurs:") == 0){
     renvoie_couleurs(client_socket_fd, data);
@@ -182,7 +185,7 @@ int recois_envoie_message(int socketfd) {
     renvoie_balises(client_socket_fd, data);
   }
   else {
-    plot(data);
+    //plot(data);
   }
 
   //fermer le socket 
@@ -226,6 +229,5 @@ int main() {
 
   //Lire et répondre au client
   recois_envoie_message(socketfd);
-  //recois_numeros_calcule(socketfd);
   return 0;
 }

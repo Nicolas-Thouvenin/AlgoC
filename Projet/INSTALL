@@ -1,0 +1,35 @@
+# INSTALL
+## Compilation du projet :
+**make all**
+
+## Serveur
+### Lancement :
+**cd src**    
+**./serveur**    
+
+## Client
+### Lancement :
+**cd src**    
+**./client**   
+*Choisissez votre action :*   
+*a : message*   
+*b : nom client*   
+*c : calcul*   
+*d : couleurs*   
+*e : balises*   
+Entrez la lettre de ce que vous souhaitez faire.   
+
+### Formats attendus des messages particuliers avec exemple :
+#### c : calcul
+Format : "operateur nombre1 nombre2"
+Exemple : "* 12 3"
+
+#### d : couleurs
+Format : "nbCouleurs, #HEXcouleur1, #HEXcouleur2, #HEXcouleur3..."
+Exemple : "2, #f00000, #FFFFFF"
+Enregistré dans le fichier : couleurs.txt
+
+#### e : balises
+Format : "nbBalises, #balise1, #balise2, #balise3..."
+Exemple : "2, #arbre, #nuit"
+Enregistré dans le fichier : balises.txt
