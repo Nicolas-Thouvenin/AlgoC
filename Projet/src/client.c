@@ -126,6 +126,40 @@ int envoie_couleurs_tache1(int socketfd) {
  
   return 0;
 }
+int envoie_balises(int socketfd) {
+ 
+  char data[1024];
+  // la réinitialisation de l'ensemble des données
+  memset(data, 0, sizeof(data));
+  
+  char message[100];
+  printf("Vos balises (nbBalise, #Balise1, #Balise2 ...) : ");
+  fgets(message, 1024, stdin);
+  strcpy(data, "balises: ");
+  strcat(data, message);
+  printf("%s", data);
+  
+  int write_status = write(socketfd, data, strlen(data));
+  if ( write_status < 0 ) {
+    perror("erreur ecriture");
+    exit(EXIT_FAILURE);
+  }
+
+  // la réinitialisation de l'ensemble des données
+  memset(data, 0, sizeof(data));
+
+
+  // lire les données de la socket
+  int read_status = read(socketfd, data, sizeof(data));
+  if ( read_status < 0 ) {
+    perror("erreur lecture");
+    return -1;
+  }
+
+  printf("Message recu: %s\n", data);
+ 
+  return 0;
+}
 
 
 int envoie_nom_de_client(int socketfd){
@@ -230,6 +264,7 @@ int main(int argc, char **argv) {
   //envoie_couleurs(socketfd, argv[1]);
   //envoie_nom_de_client(socketfd);
   //envoie_operateur_numeros(socketfd);
-  envoie_couleurs_tache1(socketfd);
+  //envoie_couleurs_tache1(socketfd);
+  envoie_balises(socketfd);
   close(socketfd);
 }

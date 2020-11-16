@@ -81,6 +81,26 @@ int renvoie_couleurs(int client_socket_fd, char *data) {
   strcat(data, fichier);
   return renvoie_message(client_socket_fd, data);
 }
+int renvoie_balises(int client_socket_fd, char *data) {
+  char code[10];
+  int nbBalises;
+  char numbers[1000];
+  sscanf(data, "%s %d %1000[^\n]", code, &nbBalises, numbers);
+  
+  FILE * fp;
+  char * token = strtok(numbers, ", #");
+  char fichier[20] = "./Balises.txt";
+  fp = fopen (fichier ,"w");
+  for(int i = 0; i < nbBalises; i++){
+    fprintf(fp, "#%s\n",token);
+    token = strtok(NULL, ", #");
+  }
+  fclose(fp);
+  
+  strcpy(data, "Enregistrement dans : ");
+  strcat(data, fichier);
+  return renvoie_message(client_socket_fd, data);
+}
 
 /* accepter la nouvelle connection d'un client et lire les données
  * envoyées par le client. En suite, le serveur envoie un message
@@ -157,6 +177,9 @@ int recois_envoie_message(int socketfd) {
   }
   else if(strcmp(code, "couleurs:") == 0){
     renvoie_couleurs(client_socket_fd, data);
+  }
+  else if(strcmp(code, "balises:") == 0){
+    renvoie_balises(client_socket_fd, data);
   }
   else {
     plot(data);
