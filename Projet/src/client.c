@@ -68,6 +68,7 @@ int envoie_operateur_numeros(int socketfd) {
   fgets(message, 1024, stdin);
   strcpy(data, "calcul: ");
   strcat(data, message);
+  printf("%s", data);
   
   int write_status = write(socketfd, data, strlen(data));
   if ( write_status < 0 ) {

@@ -96,6 +96,7 @@ int recois_envoie_message(int socketfd) {
   printf ("Message recu: %s\n", data);
   char code[10];
   sscanf(data, "%s", code);
+  printf("%s", code);
 
   //Si le message commence par le mot: 'message:' 
   if (strcmp(code, "message:") == 0) {
@@ -111,17 +112,17 @@ int recois_envoie_message(int socketfd) {
     renvoie_message(client_socket_fd, data);
   }
   else if (strcmp(code, "calcul:") == 0){
+    printf("coucou %s", data);
     char operateur[1];
-    sscanf(data, '%s', operateur);
     int n1;
-    sscanf(data, '%s', n1);
     int n2;
-    sscanf(data, '%s', n2);
-    strcpy(data, "resultat: ");
-    if (strcmp(operateur, "+")){
+    sscanf(data, "%s %s %d %d", code, operateur, &n1, &n2);
+    printf("%d %s %d", n1, operateur, n2);
+    if (strcmp(operateur, "+") == 0){
       float res = n1 + n2;
-      char buf[10];
-      strcat(data, gcvt(res,10,buf));
+      char array[10];
+      sprintf(array, "%f", res);
+      strcat(data, array);
     }
     renvoie_message(client_socket_fd, data);
   }
