@@ -99,7 +99,7 @@ int envoie_couleurs_tache1(int socketfd) {
   memset(data, 0, sizeof(data));
   
   char message[100];
-  printf("Vos couleurs (nbCouleur couleur1 couleur2 ...) : ");
+  printf("Vos couleurs (nbCouleur, #couleur1, #couleur2 ...) : ");
   fgets(message, 1024, stdin);
   strcpy(data, "couleurs: ");
   strcat(data, message);

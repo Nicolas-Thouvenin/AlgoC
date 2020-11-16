@@ -66,10 +66,20 @@ int renvoie_couleurs(int client_socket_fd, char *data) {
   int nbCouleurs;
   char numbers[1000];
   sscanf(data, "%s %d %1000[^\n]", code, &nbCouleurs, numbers);
-  printf("numbers : %s", numbers);
-  /*for(int i = 0; i < nbCouleurs; i++){
-
-  }*/
+  
+  FILE * fp;
+  char * token = strtok(numbers, ", #");
+  char fichier[20] = "./couleurs.txt";
+  fp = fopen (fichier ,"w");
+  for(int i = 0; i < nbCouleurs; i++){
+    fprintf(fp, "#%s\n",token);
+    token = strtok(NULL, ", #");
+  }
+  fclose(fp);
+  
+  strcpy(data, "Enregistrement dans : ");
+  strcat(data, fichier);
+  return renvoie_message(client_socket_fd, data);
 }
 
 /* accepter la nouvelle connection d'un client et lire les données
