@@ -61,15 +61,6 @@ int renvoie_message(int client_socket_fd, char *data) {
   }
 }
 
-int renvoie_nom(int client_socket_fd, char *data) {
-  int data_size = write (client_socket_fd, (void *) data, strlen(data));
-      
-  if (data_size < 0) {
-    perror("erreur ecriture");
-    return(EXIT_FAILURE);
-  }
-}
-
 /* accepter la nouvelle connection d'un client et lire les données
  * envoyées par le client. En suite, le serveur envoie un message
  * en retour
@@ -117,61 +108,16 @@ int recois_envoie_message(int socketfd) {
     renvoie_message(client_socket_fd, data);
   }
   else if (strcmp(code, "nom:") == 0) {
-    renvoie_nom(client_socket_fd, data);
+    renvoie_message(client_socket_fd, data);
   }
-  else {
-    plot(data);
-  }
-
-  //fermer le socket 
-  close(socketfd);
-}
-recois_numeros_calcule(socketfd){
-  struct sockaddr_in client_addr;
-  char data[1024];
-
-  int client_addr_len = sizeof(client_addr);
- 
-  // nouvelle connection de client
-  int client_socket_fd = accept(socketfd, (struct sockaddr *) &client_addr, &client_addr_len);
-  if (client_socket_fd < 0 ) {
-    perror("accept");
-    return(EXIT_FAILURE);
-  }
-
-  // la réinitialisation de l'ensemble des données
-  memset(data, 0, sizeof(data));
-
-  //lecture de données envoyées par un client
-  int data_size = read (client_socket_fd, (void *) data, sizeof(data));
-      
-  if (data_size < 0) {
-    perror("erreur lecture");
-    return(EXIT_FAILURE);
-  }
-  
-  /*
-   * extraire le code des données envoyées par le client. 
-   * Les données envoyées par le client peuvent commencer par le mot "message :" ou un autre mot.
-   */
-  printf ("Message recu: %s\n", data);
-  char code[10];
-  sscanf(data, "%s", code);
-
-  //Si le message commence par le mot: 'message:' 
-  if (strcmp(code, "calcule:") == 0) {
-    // Demandez à l'utilisateur d'entrer un message
-    char message[100];
-    printf("Votre message (max 1000 caracteres): ");
-    fgets(message, 1024, stdin);
-    strcpy(data, "message: ");
+  else if (strcmp(code, "calcul:") == 0){
     char operateur[1];
     sscanf(data, '%s', operateur);
     int n1;
     sscanf(data, '%s', n1);
     int n2;
     sscanf(data, '%s', n2);
-    strcpy(data, "message: ");
+    strcpy(data, "resultat: ");
     if (strcmp(operateur, "+")){
       float res = n1 + n2;
       char buf[10];
@@ -179,9 +125,6 @@ recois_numeros_calcule(socketfd){
     }
     renvoie_message(client_socket_fd, data);
   }
-  else if (strcmp(code, "nom:") == 0) {
-    renvoie_nom(client_socket_fd, data);
-  }
   else {
     plot(data);
   }
@@ -189,7 +132,6 @@ recois_numeros_calcule(socketfd){
   //fermer le socket 
   close(socketfd);
 }
-
 int main() {
 
   int socketfd;
@@ -227,7 +169,7 @@ int main() {
   listen(socketfd, 10);
 
   //Lire et répondre au client
-  //recois_envoie_message(socketfd);
-  recois_numeros_calcule(socketfd);
+  recois_envoie_message(socketfd);
+  //recois_numeros_calcule(socketfd);
   return 0;
 }

@@ -62,11 +62,11 @@ int envoie_operateur_numeros(int socketfd) {
   char data[1024];
   // la réinitialisation de l'ensemble des données
   memset(data, 0, sizeof(data));
-  strcpy(data, "calcule :");
+  
   char message[100];
-  printf("Votre calcule(operateur nombre1 nombre 2) : ");
+  printf("Votre calcul (operateur nombre1 nombre 2) : ");
   fgets(message, 1024, stdin);
-  strcpy(data, "calcule:");
+  strcpy(data, "calcul: ");
   strcat(data, message);
   
   int write_status = write(socketfd, data, strlen(data));
