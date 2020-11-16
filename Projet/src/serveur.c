@@ -65,7 +65,7 @@ int renvoie_couleurs(int client_socket_fd, char *data) {
   char code[10];
   int nbCouleurs;
   char numbers[1000];
-  sscanf(data, "%s %d %s", code, &nbCouleurs, numbers);
+  sscanf(data, "%s %d %1000[^\n]", code, &nbCouleurs, numbers);
   printf("numbers : %s", numbers);
   /*for(int i = 0; i < nbCouleurs; i++){
 
