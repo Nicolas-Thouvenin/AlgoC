@@ -185,7 +185,7 @@ int recois_envoie_message(int socketfd) {
     renvoie_balises(client_socket_fd, data);
   }
   else {
-    //plot(data);
+    plot(data);
   }
 
   //fermer le socket 
