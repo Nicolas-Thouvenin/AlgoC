@@ -15,8 +15,21 @@
 #include <unistd.h>
 
 #include "serveur.h"
+#include "json.h"
 
 void plot(char *data) {
+  char code[20];
+  int nbCouleurs;
+  char numbers[1000];
+
+  sscanf(data, "%s %d %1000[^\n]", code, &nbCouleurs, numbers);
+  char nbCchar[10];
+  sprintf(nbCchar, "%d", nbCouleurs);
+  char title[50];
+  strcpy(title, "set title 'Top ");
+  strcat(title, nbCchar);
+  strcat(title, " colors'\n");
+
 
   //Extraire le compteur et les couleurs RGB 
   FILE *p = popen("gnuplot -persist", "w");
@@ -28,7 +41,7 @@ void plot(char *data) {
   fprintf(p, "set xrange [-15:15]\n");
   fprintf(p, "set yrange [-15:15]\n");
   fprintf(p, "set style fill transparent solid 0.9 noborder\n");
-  fprintf(p, "set title 'Top 10 colors'\n");
+  fprintf(p, "%s", title);
   fprintf(p, "plot '-' with circles lc rgbcolor variable\n");
   while(1) {
     char *token = strtok_r(str, ",", &saveptr);
@@ -41,7 +54,7 @@ void plot(char *data) {
     }
     else {
       // Le numéro 36, parceque 360° (cercle) / 10 couleurs = 36
-      fprintf(p, "0 0 10 %d %d 0x%s\n", (count-1)*36, count*36, token+1);
+      fprintf(p, "0 0 10 %d %d 0x%s\n", (count-1)*(360/nbCouleurs), count*(360/nbCouleurs), token+1);
     }
     count++;
   }
@@ -53,6 +66,7 @@ void plot(char *data) {
 /* renvoyer un message (*data) au client (client_socket_fd)
  */
 int renvoie_message(int client_socket_fd, char *data) {
+  json_response(data);
   int data_size = write (client_socket_fd, (void *) data, strlen(data));
       
   if (data_size < 0) {
@@ -61,52 +75,51 @@ int renvoie_message(int client_socket_fd, char *data) {
   }
 }
 
-int renvoie_couleurs(int client_socket_fd, char *data) {
-  char code[10];
+int renvoie_couleurs(int client_socket_fd, char *vals) {
   int nbCouleurs;
   char numbers[1000];
-  sscanf(data, "%s %d %1000[^\n]", code, &nbCouleurs, numbers);
+  sscanf(vals, "%d %1000[^\n]", &nbCouleurs, numbers);
   
   FILE * fp;
-  char * token = strtok(numbers, ", #");
+  char * token = strtok(numbers, " #");
   char fichier[20] = "./couleurs.txt";
   fp = fopen (fichier ,"w");
   for(int i = 0; i < nbCouleurs; i++){
     fprintf(fp, "#%s\n",token);
-    token = strtok(NULL, ", #");
+    token = strtok(NULL, " #");
   }
   fclose(fp);
-  
+
+  char data[1024];
   strcpy(data, "Enregistrement dans : ");
   strcat(data, fichier);
   return renvoie_message(client_socket_fd, data);
 }
-int renvoie_balises(int client_socket_fd, char *data) {
-  char code[10];
+int renvoie_balises(int client_socket_fd, char *vals) {
   int nbBalises;
   char numbers[1000];
-  sscanf(data, "%s %d %1000[^\n]", code, &nbBalises, numbers);
+  sscanf(vals, "%d %1000[^\n]", &nbBalises, numbers);
   
   FILE * fp;
-  char * token = strtok(numbers, ", #");
+  char * token = strtok(numbers, " #");
   char fichier[20] = "./balises.txt";
   fp = fopen (fichier ,"w");
   for(int i = 0; i < nbBalises; i++){
     fprintf(fp, "#%s\n",token);
-    token = strtok(NULL, ", #");
+    token = strtok(NULL, " #");
   }
   fclose(fp);
   
+  char data[1024];
   strcpy(data, "Enregistrement dans : ");
   strcat(data, fichier);
   return renvoie_message(client_socket_fd, data);
 }
-int renvoie_calcul(int client_socket_fd, char *data) {
+int renvoie_calcul(int client_socket_fd, char *vals) {
   char operateur[1];
-  char code[10];
   float n1;
   float n2;
-  sscanf(data, "%s %s %f %f", code, operateur, &n1, &n2);
+  sscanf(vals, "%s %f %f", operateur, &n1, &n2);
   float res;
   if (strcmp(operateur, "+") == 0){
     res = n1 + n2;
@@ -122,7 +135,8 @@ int renvoie_calcul(int client_socket_fd, char *data) {
   }
   char sRes[10];
   sprintf(sRes, "%f", res);
-  strcat(data, sRes);
+  char data[1024];
+  strcpy(data, sRes);
   return renvoie_message(client_socket_fd, data);
 }
 
@@ -160,31 +174,31 @@ int recois_envoie_message(int socketfd) {
    */
   printf ("Message recu: %s\n", data);
   char code[10];
-  sscanf(data, "%s", code);
+  char tabValues[1000];
+  json_code_getter(data, code, tabValues);
 
   //Si le message commence par le mot: 'message:' 
-  if (strcmp(code, "message:") == 0) {
+  if (strcmp(code, "message") == 0) {
     // Demandez à l'utilisateur d'entrer un message
     char message[100];
     printf("Votre message (max 1000 caracteres): ");
     fgets(message, 1024, stdin);
-    strcpy(data, "message: ");
-    strcat(data, message);
+    strcpy(data, message);
     renvoie_message(client_socket_fd, data);
   }
-  else if (strcmp(code, "nom:") == 0) {
+  else if (strcmp(code, "nom") == 0) {
     renvoie_message(client_socket_fd, data);
   }
-  else if (strcmp(code, "calcul:") == 0){ 
-    renvoie_calcul(client_socket_fd, data);
+  else if (strcmp(code, "calcul") == 0){ 
+    renvoie_calcul(client_socket_fd, tabValues);
   }
-  else if(strcmp(code, "couleurst1:") == 0){
-    renvoie_couleurs(client_socket_fd, data);
+  else if(strcmp(code, "couleurst1") == 0){
+    renvoie_couleurs(client_socket_fd, tabValues);
   }
-  else if(strcmp(code, "balises:") == 0){
-    renvoie_balises(client_socket_fd, data);
+  else if(strcmp(code, "balises") == 0){
+    renvoie_balises(client_socket_fd, tabValues);
   }
-  else if(strcmp(code, "couleurs:") == 0){
+  else if(strcmp(code, "couleurs") == 0){
     plot(data);
   }
 
