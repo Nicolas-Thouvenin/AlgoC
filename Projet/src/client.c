@@ -72,20 +72,26 @@ int envoie_nom_de_client(int socketfd){
   return envoyeur_recepteur_avec_msg(socketfd, "Veuillez entrer le nom de votre machine : ", "nom: ");
 }
 
-void analyse(char *pathname, char *data) {
+void analyse(char *pathname, char *data, char *nbCouleurs) {
   //compte de couleurs
   couleur_compteur *cc = analyse_bmp_image(pathname);
 
   int count;
   strcpy(data, "couleurs: ");
-  char temp_string[10] = "10,";
-  if (cc->size < 10) {
+  int x = atoi(nbCouleurs);
+  if (x > 30) {
+    x = 30;
+  }
+  char temp_string[10]; 
+  strcat(temp_string,nbCouleurs);
+  strcat(temp_string,",");
+  if (cc->size < x) {
     sprintf(temp_string, "%d,", cc->size);
   }
   strcat(data, temp_string);
   
   //choisir 10 couleurs
-  for (count = 1; count < 11 && cc->size - count >0; count++) {
+  for (count = 1; count < (x+1) && cc->size - count >0; count++) {
     if(cc->compte_bit ==  BITS32) {
       sprintf(temp_string, "#%02x%02x%02x,", cc->cc.cc24[cc->size-count].c.rouge,cc->cc.cc32[cc->size-count].c.vert,cc->cc.cc32[cc->size-count].c.bleu);
     }
@@ -99,10 +105,10 @@ void analyse(char *pathname, char *data) {
   data[strlen(data)-1] = '\0';
 }
 
-int envoie_couleurs(int socketfd, char *pathname) {
+int envoie_couleurs(int socketfd, char *pathname, char *nbCouleurs) {
   char data[1024];
   memset(data, 0, sizeof(data));
-  analyse(pathname, data);
+  analyse(pathname, data, nbCouleurs);
   
   int write_status = write(socketfd, data, strlen(data));
   if ( write_status < 0 ) {
@@ -141,7 +147,7 @@ int main(int argc, char **argv) {
     perror("connection serveur");
     exit(EXIT_FAILURE);
   }
-  char toExe[10];
+  /*char toExe[10];
   printf("Choisissez votre action : \n");
   printf("a : message\n");
   printf("b : nom client\n");
@@ -160,7 +166,7 @@ int main(int argc, char **argv) {
     envoie_couleurs_tache1(socketfd);
   else if(strncmp(toExe, "e", 1) == 0)
     envoie_balises(socketfd);
-  else
-    //envoie_couleurs(socketfd, argv[1]);
-  close(socketfd);
+  else*/
+  envoie_couleurs(socketfd, argv[1], argv[2]);
+close(socketfd);
 }
