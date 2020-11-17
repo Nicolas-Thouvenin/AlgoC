@@ -59,23 +59,28 @@ void json_creator(char *code, char *values, char *data){
   strcat(toReturn, code);
   strcat(toReturn,"\", \"valeurs\" : [ ");
 
-  char * delim = "";
-  if (strcmp(code, "message") == 0)
-    delim = "";
-  else if (strcmp(code, "calcul") == 0)
-    delim = " ";
-  else 
-    delim = ", ";
-  char * token = strtok(values, delim);
-  while(token != NULL) {
-    strcat(toReturn, "\"");
-    strcat(toReturn, token);
-    strcat(toReturn, "\", ");
-    token = strtok(NULL, delim);
+  if (strcmp(code, "message ") != 0 && strcmp(code, "nom ") != 0){
+    char * delim = "";
+    if (strcmp(code, "calcul ") == 0)
+      delim = " ";
+    else 
+      delim = ", ";
+    char * token = strtok(values, delim);
+    while(token != NULL) {
+      strcat(toReturn, "\"");
+      strcat(toReturn, token);
+      strcat(toReturn, "\", ");
+      token = strtok(NULL, delim);
+    }
+    toReturn[strlen(toReturn)-2] = '\0';
   }
-  toReturn[strlen(toReturn)-2] = '\0';
+  else{
+    strcat(toReturn, "\"");
+    strcat(toReturn, values);
+    strcat(toReturn, "\"");
+  }
   strcat(toReturn, " ]}");
-  printf("data sent (JSON) : %s\n\n", toReturn);
+  printf("Data sent (JSON) : %s\n\n", toReturn);
   strcpy(data, toReturn);
 }
 

@@ -27,7 +27,7 @@ int envoyeur_recepteur_avec_msg(int socketfd, char msg[100], char code[10]){
   fgets(message, 1024, stdin);
   strcpy(data, code);
   strcat(data, message);
-  printf("Data to send : %s", data);
+  //printf("Data to send : %s", data);
   json_creator(code, message, data);
   
   
@@ -54,18 +54,15 @@ int envoyeur_recepteur_avec_msg(int socketfd, char msg[100], char code[10]){
 int envoie_recois_message(int socketfd) {
   return envoyeur_recepteur_avec_msg(socketfd, "Votre message (max 1000 caracteres): ", "message ");
 }
-
 int envoie_operateur_numeros(int socketfd) {
   return envoyeur_recepteur_avec_msg(socketfd, "Votre calcul (operateur nombre1 nombre2) : ", "calcul ");
 }
-
 int envoie_couleurs_tache1(int socketfd) {
-  return envoyeur_recepteur_avec_msg(socketfd, "Vos couleurs (nbCouleur, #couleur1, #couleur2 ...) : ", "couleurst1 ");
+  return envoyeur_recepteur_avec_msg(socketfd, "Vos couleurs (#HexCouleur1, #HexCouleur2 ...) : ", "couleurst1 ");
 }
 int envoie_balises(int socketfd) {
-  return envoyeur_recepteur_avec_msg(socketfd, "Vos balises (nbBalise, #Balise1, #Balise2 ...) : ", "balises ");
+  return envoyeur_recepteur_avec_msg(socketfd, "Vos balises (#Balise1, #Balise2 ...) : ", "balises ");
 }
-
 int envoie_nom_de_client(int socketfd){
   return envoyeur_recepteur_avec_msg(socketfd, "Veuillez entrer le nom de votre machine : ", "nom ");
 }
@@ -170,6 +167,8 @@ int main(int argc, char **argv) {
       envoie_couleurs_tache1(socketfd);
     else if(strncmp(toExe, "e", 1) == 0)
       envoie_balises(socketfd);
+    else
+      printf("Fais un effort et recommence en écrivant une lettre (sensible à la casse)");
   }
 
 close(socketfd);

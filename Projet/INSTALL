@@ -25,11 +25,15 @@ Format : "operateur nombre1 nombre2"
 Exemple : "* 12 3"
 
 #### d : couleurs
-Format : "nbCouleurs, #HEXcouleur1, #HEXcouleur2, #HEXcouleur3..."
-Exemple : "2, #f00000, #FFFFFF"
+Format : "#HEXcouleur1, #HEXcouleur2, #HEXcouleur3..."
+Exemple : "#f00000, #FFFFFF"
 Enregistré dans le fichier : couleurs.txt
 
 #### e : balises
-Format : "nbBalises, #balise1, #balise2, #balise3..."
-Exemple : "2, #arbre, #nuit"
+Format : "#balise1, #balise2, #balise3..."
+Exemple : "#arbre, #nuit"
 Enregistré dans le fichier : balises.txt
+
+### Lancement (plot)
+**./client ./../img/rose.bmp 15**
+Pour avoir un graphique de 15 couleurs (30 max) pour l'image rose.bmp

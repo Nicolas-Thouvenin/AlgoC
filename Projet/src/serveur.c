@@ -75,16 +75,12 @@ int renvoie_message(int client_socket_fd, char *data) {
   }
 }
 
-int renvoie_couleurs(int client_socket_fd, char *vals) {
-  int nbCouleurs;
-  char numbers[1000];
-  sscanf(vals, "%d %1000[^\n]", &nbCouleurs, numbers);
-  
+int renvoie_couleurs(int client_socket_fd, char *vals) {  
   FILE * fp;
-  char * token = strtok(numbers, " #");
+  char * token = strtok(vals, " #");
   char fichier[20] = "./couleurs.txt";
   fp = fopen (fichier ,"w");
-  for(int i = 0; i < nbCouleurs; i++){
+  while(token != NULL){
     fprintf(fp, "#%s\n",token);
     token = strtok(NULL, " #");
   }
@@ -96,15 +92,11 @@ int renvoie_couleurs(int client_socket_fd, char *vals) {
   return renvoie_message(client_socket_fd, data);
 }
 int renvoie_balises(int client_socket_fd, char *vals) {
-  int nbBalises;
-  char numbers[1000];
-  sscanf(vals, "%d %1000[^\n]", &nbBalises, numbers);
-  
   FILE * fp;
-  char * token = strtok(numbers, " #");
+  char * token = strtok(vals, " #");
   char fichier[20] = "./balises.txt";
   fp = fopen (fichier ,"w");
-  for(int i = 0; i < nbBalises; i++){
+  while(token != NULL){
     fprintf(fp, "#%s\n",token);
     token = strtok(NULL, " #");
   }
@@ -176,6 +168,7 @@ int recois_envoie_message(int socketfd) {
   char code[10];
   char tabValues[1000];
   json_code_getter(data, code, tabValues);
+  printf("%s", code);
 
   //Si le message commence par le mot: 'message:' 
   if (strcmp(code, "message") == 0) {
@@ -187,7 +180,7 @@ int recois_envoie_message(int socketfd) {
     renvoie_message(client_socket_fd, data);
   }
   else if (strcmp(code, "nom") == 0) {
-    renvoie_message(client_socket_fd, data);
+    renvoie_message(client_socket_fd, tabValues);
   }
   else if (strcmp(code, "calcul") == 0){ 
     renvoie_calcul(client_socket_fd, tabValues);
@@ -198,7 +191,7 @@ int recois_envoie_message(int socketfd) {
   else if(strcmp(code, "balises") == 0){
     renvoie_balises(client_socket_fd, tabValues);
   }
-  else if(strcmp(code, "couleurs") == 0){
+  else{
     plot(data);
   }
 

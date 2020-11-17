@@ -1,17 +1,21 @@
 # Objectif
 * Créer un serveur capable d'échanger avec plusieurs machines clients
 
+# Tâche 2
+
 # Bibliothèques
-* Bibliothèques standart, aucun ajout par rapport aux fichiers d'origines
+* Bibliothèques standart + ctype.h pour utiliser la fonction isspace() qui aurait été longue a codée à la main et peu intéressante
 
 # Difficulté
-* Moyenne. La mise en place de l'env linux + de dév (comment compiler) a été le plus compliqué
-* Une fois que nous étions vraiment lancés, le développement fut assez fluide.
+* Moyenne. La gestion des strings en C est une galère sans pareille.
 
 # Commentaires
-* On a fait le choix de partir sur un petit menu pour le client pour pouvoir avoir une utilisation multiple du programme sans être obligé de commenter-décommenter le code à chaque fois
+* Ajouts des fichiers json.c/h 
+* Le client et le serveur communique maintenant en format JSON (de manière explicit dans leurs utilisations)
+* voir le fichier INSTALL pour savoir comment se servir des différentes fonctionnalités du code
 
 # Fichiers 
 * CONTRIBUTORS : noms des auteurs du code (nous)
-* INSTALL : DEscription de la compilation et l'utilisation du code
-
+* INSTALL : Description de la compilation et l'utilisation du code
+* json.c : librairie contruites pour les fonctions relatives au JSON pour que les fonctiones soient utilisables par le client et le serveur
+* json.h : header de json.c
