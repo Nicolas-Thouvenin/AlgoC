@@ -178,13 +178,13 @@ int recois_envoie_message(int socketfd) {
   else if (strcmp(code, "calcul:") == 0){ 
     renvoie_calcul(client_socket_fd, data);
   }
-  else if(strcmp(code, "couleurs:") == 0){
+  else if(strcmp(code, "couleurst1:") == 0){
     renvoie_couleurs(client_socket_fd, data);
   }
   else if(strcmp(code, "balises:") == 0){
     renvoie_balises(client_socket_fd, data);
   }
-  else {
+  else if(strcmp(code, "couleurs:") == 0){
     plot(data);
   }
 
