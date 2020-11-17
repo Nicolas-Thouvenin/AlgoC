@@ -62,7 +62,7 @@ int envoie_operateur_numeros(int socketfd) {
 }
 
 int envoie_couleurs_tache1(int socketfd) {
-  return envoyeur_recepteur_avec_msg(socketfd, "Vos couleurs (nbCouleur, #couleur1, #couleur2 ...) : ", "couleurs: ");
+  return envoyeur_recepteur_avec_msg(socketfd, "Vos couleurs (nbCouleur, #couleur1, #couleur2 ...) : ", "couleurst1: ");
 }
 int envoie_balises(int socketfd) {
   return envoyeur_recepteur_avec_msg(socketfd, "Vos balises (nbBalise, #Balise1, #Balise2 ...) : ", "balises: ");
@@ -150,26 +150,30 @@ int main(int argc, char **argv) {
     perror("connection serveur");
     exit(EXIT_FAILURE);
   }
-  /*char toExe[10];
-  printf("Choisissez votre action : \n");
-  printf("a : message\n");
-  printf("b : nom client\n");
-  printf("c : calcul\n");
-  printf("d : couleurs\n");
-  printf("e : balises\n");
-  fgets(toExe, 10, stdin);
-  printf("%s", toExe);
-  if(strncmp(toExe, "a", 1) == 0)
-    envoie_recois_message(socketfd);
-  else if(strncmp(toExe, "b", 1) == 0)
-    envoie_nom_de_client(socketfd);
-  else if(strncmp(toExe, "c", 1) == 0)
-    envoie_operateur_numeros(socketfd);
-  else if(strncmp(toExe, "d", 1) == 0)
-    envoie_couleurs_tache1(socketfd);
-  else if(strncmp(toExe, "e", 1) == 0)
-    envoie_balises(socketfd);
-  else*/
-  envoie_couleurs(socketfd, argv[1], argv[2]);
+  if(argc > 1)
+    envoie_couleurs(socketfd, argv[1], argv[2]);
+  else
+  {
+    char toExe[10];
+    printf("Choisissez votre action : \n");
+    printf("a : message\n");
+    printf("b : nom client\n");
+    printf("c : calcul\n");
+    printf("d : couleurs\n");
+    printf("e : balises\n");
+    fgets(toExe, 10, stdin);
+    printf("%s", toExe);
+    if(strncmp(toExe, "a", 1) == 0)
+      envoie_recois_message(socketfd);
+    else if(strncmp(toExe, "b", 1) == 0)
+      envoie_nom_de_client(socketfd);
+    else if(strncmp(toExe, "c", 1) == 0)
+      envoie_operateur_numeros(socketfd);
+    else if(strncmp(toExe, "d", 1) == 0)
+      envoie_couleurs_tache1(socketfd);
+    else if(strncmp(toExe, "e", 1) == 0)
+      envoie_balises(socketfd);
+  }
+
 close(socketfd);
 }
