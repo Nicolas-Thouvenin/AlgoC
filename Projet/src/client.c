@@ -79,6 +79,12 @@ void analyse(char *pathname, char *data, char *nbCouleurs) {
   int count;
   strcpy(data, "couleurs: ");
   int x = atoi(nbCouleurs);
+<<<<<<< HEAD
+=======
+  if (x > 30) {
+    x = 30;
+  }
+>>>>>>> d43e40f8d6800412f91d6d4b584c539ec9c36201
   char temp_string[10]; 
   strcat(temp_string,nbCouleurs);
   strcat(temp_string,",");
