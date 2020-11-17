@@ -141,7 +141,7 @@ int main(int argc, char **argv) {
     perror("connection serveur");
     exit(EXIT_FAILURE);
   }
-  char toExe[10];
+  /*char toExe[10];
   printf("Choisissez votre action : \n");
   printf("a : message\n");
   printf("b : nom client\n");
@@ -160,7 +160,7 @@ int main(int argc, char **argv) {
     envoie_couleurs_tache1(socketfd);
   else if(strncmp(toExe, "e", 1) == 0)
     envoie_balises(socketfd);
-  else
-    //envoie_couleurs(socketfd, argv[1]);
+  else*/
+  envoie_couleurs(socketfd, argv[1]);
   close(socketfd);
 }
