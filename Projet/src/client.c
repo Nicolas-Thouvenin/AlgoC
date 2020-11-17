@@ -165,5 +165,5 @@ int main(int argc, char **argv) {
     envoie_balises(socketfd);
   else*/
   envoie_couleurs(socketfd, argv[1], argv[2]);
-  close(socketfd);
+close(socketfd);
 }
