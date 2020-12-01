@@ -1,0 +1,22 @@
+ptr: { "code" : "calcul ", "valeurs" : [ "+", 23, oui ]}
+
+ptr: { "code" : "calcul ", "valeurs" : [ "+", 23, oui ]}
+
+ptr: "code" : "calcul ", "valeurs" : [ "+", 23, oui ]}
+
+ptr: : "calcul ", "valeurs" : [ "+", 23, oui ]}
+
+ptr: "calcul ", "valeurs" : [ "+", 23, oui ]}
+
+ptr: "valeurs" : [ "+", 23, oui ]}
+
+ptr: : [ "+", 23, oui ]}
+
+ptr: "+", 23, oui ]}
+
+ptr: "+", 23, oui 
+values: "+", 23, oui 
+token: "+"
+token: "+"
+token: 23
+token: oui

@@ -16,6 +16,7 @@
 
 #include "serveur.h"
 #include "json.h"
+#include "validator.h"
 
 void plot(char *data) {
   char code[20];
@@ -165,36 +166,46 @@ int recois_envoie_message(int socketfd) {
    * Les données envoyées par le client peuvent commencer par le mot "message :" ou un autre mot.
    */
   printf ("Message recu: %s\n", data);
-  char code[10];
-  char tabValues[1000];
-  json_code_getter(data, code, tabValues);
-  printf("%s", code);
+  const char * resValidation = datavalidator(data);
+  if(resValidation == NULL){
+    printf("The JSON data is OK\n");
+    char code[10];
+    char tabValues[1000];
+    json_code_getter(data, code, tabValues);
+    //printf("%s", code);
 
-  //Si le message commence par le mot: 'message:' 
-  if (strcmp(code, "message") == 0) {
-    // Demandez à l'utilisateur d'entrer un message
-    char message[100];
-    printf("Votre message (max 1000 caracteres): ");
-    fgets(message, 1024, stdin);
-    strcpy(data, message);
-    renvoie_message(client_socket_fd, data);
-  }
-  else if (strcmp(code, "nom") == 0) {
-    renvoie_message(client_socket_fd, tabValues);
-  }
-  else if (strcmp(code, "calcul") == 0){ 
-    renvoie_calcul(client_socket_fd, tabValues);
-  }
-  else if(strcmp(code, "couleurst1") == 0){
-    renvoie_couleurs(client_socket_fd, tabValues);
-  }
-  else if(strcmp(code, "balises") == 0){
-    renvoie_balises(client_socket_fd, tabValues);
+    //Si le message commence par le mot: 'message:' 
+    if (strcmp(code, "message") == 0) {
+      // Demandez à l'utilisateur d'entrer un message
+      char message[900];
+      printf("Votre message (max 900 caracteres): ");
+      fgets(message, 1024, stdin);
+      strcpy(data, message);
+      renvoie_message(client_socket_fd, data);
+    }
+    else if (strcmp(code, "nom") == 0) {
+      renvoie_message(client_socket_fd, tabValues);
+    }
+    else if (strcmp(code, "calcul") == 0){ 
+      renvoie_calcul(client_socket_fd, tabValues);
+    }
+    else if(strcmp(code, "couleurst1") == 0){
+      renvoie_couleurs(client_socket_fd, tabValues);
+    }
+    else if(strcmp(code, "balises") == 0){
+      renvoie_balises(client_socket_fd, tabValues);
+    }
+    else{
+      plot(data);
+    }
   }
   else{
-    plot(data);
+    printf("Désolé mais votre format JSON n'est pas accepté\nERREUR : %s", resValidation);
+    char msg[1024];
+    strcpy(msg, "Désolé mais votre format JSON n'est pas accepté\nERREUR : ");
+    strcat(msg, resValidation);
+    renvoie_message(client_socket_fd, msg);
   }
-
   //fermer le socket 
   close(socketfd);
 }

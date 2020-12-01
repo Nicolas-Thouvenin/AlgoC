@@ -21,15 +21,19 @@ int envoyeur_recepteur_avec_msg(int socketfd, char msg[100], char code[10]){
   char data[1024];
   // la réinitialisation de l'ensemble des données
   memset(data, 0, sizeof(data));
-
-  char message[100];
+  char message[900];
   printf("%s", msg);
   fgets(message, 1024, stdin);
-  strcpy(data, code);
-  strcat(data, message);
-  //printf("Data to send : %s", data);
-  json_creator(code, message, data);
-  
+  if(strcmp(code, "perso ") != 0)
+  {
+    strcpy(data, code);
+    strcat(data, message);
+    //printf("Data to send : %s", data);
+    json_creator(code, message, data);
+  }
+  else{
+    strcpy(data, message);
+  }
   
   int write_status = write(socketfd, data, strlen(data));
   if ( write_status < 0 ) {
@@ -52,7 +56,7 @@ int envoyeur_recepteur_avec_msg(int socketfd, char msg[100], char code[10]){
 }
 
 int envoie_recois_message(int socketfd) {
-  return envoyeur_recepteur_avec_msg(socketfd, "Votre message (max 1000 caracteres): ", "message ");
+  return envoyeur_recepteur_avec_msg(socketfd, "Votre message (max 900 caracteres): ", "message ");
 }
 int envoie_operateur_numeros(int socketfd) {
   return envoyeur_recepteur_avec_msg(socketfd, "Votre calcul (operateur nombre1 nombre2) : ", "calcul ");
@@ -65,6 +69,9 @@ int envoie_balises(int socketfd) {
 }
 int envoie_nom_de_client(int socketfd){
   return envoyeur_recepteur_avec_msg(socketfd, "Veuillez entrer le nom de votre machine : ", "nom ");
+}
+int envoie_json(int socketfd){
+  return envoyeur_recepteur_avec_msg(socketfd, "Veuillez entrer votre data JSON ({ \"code\" : \"perso \", \"valeurs\" : [ \"string\", number, ... ]}) : ", "perso ");
 }
 
 
@@ -155,8 +162,9 @@ int main(int argc, char **argv) {
     printf("c : calcul\n");
     printf("d : couleurs\n");
     printf("e : balises\n");
+    printf("f : personnalized json message\n");
     fgets(toExe, 10, stdin);
-    printf("%s", toExe);
+    //printf("%s", toExe);
     if(strncmp(toExe, "a", 1) == 0)
       envoie_recois_message(socketfd);
     else if(strncmp(toExe, "b", 1) == 0)
@@ -167,6 +175,8 @@ int main(int argc, char **argv) {
       envoie_couleurs_tache1(socketfd);
     else if(strncmp(toExe, "e", 1) == 0)
       envoie_balises(socketfd);
+    else if(strncmp(toExe, "f", 1) == 0)
+      envoie_json(socketfd);
     else
       printf("Fais un effort et recommence en écrivant une lettre (sensible à la casse)");
   }

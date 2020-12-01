@@ -1,30 +1,8 @@
-#include <string.h>
-#include <stdio.h> 
-#include <stdlib.h> 
-#include <ctype.h>
-
 
 #include "json.h"
+#include "usefulFcts.h"
 
 
-char *ltrim(char *s)
-{
-    while(isspace(*s)) s++;
-    return s;
-}
-
-char *rtrim(char *s)
-{
-    char* back = s + strlen(s);
-    while(isspace(*--back));
-    *(back+1) = '\0';
-    return s;
-}
-
-char *trim(char *s)
-{
-    return rtrim(ltrim(s)); 
-}
 
 void json_code_getter(char *data, char *code, char *tabVals){
   int wordCounter = 0;
@@ -33,24 +11,41 @@ void json_code_getter(char *data, char *code, char *tabVals){
   strcpy(code, "");
   strcpy(tabVals, "");
   do {
+    //printf("%d : %s\n", wordCounter, token);
     if(wordCounter == 3){
       strcat(code, token);
+      code = trim(code);
     }
-    else if (wordCounter >= 7 && (wordCounter%2 != 0)){
+    else if(wordCounter >= 7 && strcmp(code, "calcul") == 0)
+    {
+      delim = " ";
+      if(wordCounter == 9){
+        token[strlen(token)-1] = '\0';
+        strcat(tabVals, token);
+        strcat(tabVals, " ");
+      }
+      else if(wordCounter == 10 || wordCounter == 7){
+        strcat(tabVals, token);
+        strcat(tabVals, " ");
+      }
+    }
+    else if(wordCounter >= 7 && (wordCounter%2 != 0)){
       strcat(tabVals, token);
       strcat(tabVals, " ");
     }
+    
     token = strtok(NULL, delim);
     wordCounter++;
   }while(token != NULL);
-  code = trim(code);
   tabVals = trim(tabVals);
+  //printf("%s", tabVals);
 }
 
 
 
-void json_creator(char *code, char *values, char *data){
+void json_creator(char *code, char *values, char *data){  
     values = trim(values);
+      regex_t regex;
   /*
   {  "code" : "calcul",  "valeurs" : [ "+", "23", "45" ]}
   */
@@ -67,9 +62,12 @@ void json_creator(char *code, char *values, char *data){
       delim = ", ";
     char * token = strtok(values, delim);
     while(token != NULL) {
-      strcat(toReturn, "\"");
+      if(isNumber(token) == 0)
+      {strcat(toReturn, "\"");}
       strcat(toReturn, token);
-      strcat(toReturn, "\", ");
+      if(isNumber(token) == 0)
+      {strcat(toReturn, "\"");}
+      strcat(toReturn, ", ");
       token = strtok(NULL, delim);
     }
     toReturn[strlen(toReturn)-2] = '\0';
