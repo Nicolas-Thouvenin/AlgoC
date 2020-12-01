@@ -24,6 +24,8 @@ const char * datavalidator(const char *data){
         return "Pas de { ouvrante en premier char\n";
     }
 
+    //rajouter le trim
+
     fprintf(fp, "ptr: %s\n", ptr);
     ptr = strstr(ptr, "\"code\"");
     if (ptr == NULL) {
@@ -127,4 +129,3 @@ const char * datavalidator(const char *data){
     fclose(fp);
     return NULL;
 }
-

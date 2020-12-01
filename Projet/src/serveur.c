@@ -74,6 +74,7 @@ int renvoie_message(int client_socket_fd, char *data) {
     perror("erreur ecriture");
     return(EXIT_FAILURE);
   }
+  return 1;
 }
 
 int renvoie_couleurs(int client_socket_fd, char *vals) {  
@@ -82,7 +83,7 @@ int renvoie_couleurs(int client_socket_fd, char *vals) {
   char fichier[20] = "./couleurs.txt";
   fp = fopen (fichier ,"w");
   while(token != NULL){
-    fprintf(fp, "#%s\n",token);
+    fprintf(fp, "#%s\n",token); 
     token = strtok(NULL, " #");
   }
   fclose(fp);
@@ -150,6 +151,8 @@ int recois_envoie_message(int socketfd) {
     return(EXIT_FAILURE);
   }
 
+  //fork pour créer plusieurs process
+
   // la réinitialisation de l'ensemble des données
   memset(data, 0, sizeof(data));
 
@@ -208,6 +211,7 @@ int recois_envoie_message(int socketfd) {
   }
   //fermer le socket 
   close(socketfd);
+  return 1;
 }
 int main() {
 

@@ -7,6 +7,7 @@ SOBJS ?= serveur.o json.o validator.o usefulFcts.o
 
 SERVER = serveur
 CLIENT = client
+CFLAGS = -Wall -Wextra -g
 
 all: $(SERVER) $(CLIENT)
 
@@ -17,5 +18,5 @@ $(CLIENT): $(COBJS)
 	$(CC) -o $(CLIENT) $(COBJS)
 
 .c.o: 
-	$(CC) -c $*.c
+	$(CC) -c $*.c 
 
