@@ -17,6 +17,7 @@
 *c : calcul*   
 *d : couleurs*   
 *e : balises*   
+*f : personnalized json message*   
 Entrez la lettre de ce que vous souhaitez faire.   
 
 ### Formats attendus des messages particuliers avec exemple :
@@ -33,6 +34,11 @@ Enregistré dans le fichier : couleurs.txt
 Format : "#balise1, #balise2, #balise3..."
 Exemple : "#arbre, #nuit"
 Enregistré dans le fichier : balises.txt
+
+#### f : json
+Format : ({ "code" : "perso ", "valeurs" : [ "string", number, ... ]})    
+Exemple : { "code" : "calcul ", "valeurs" : [ "+", 23, 12 ]}
+Logs de vérification dans logValidator.txt
 
 ### Lancement (plot)
 **./client ./../img/rose.bmp 15**

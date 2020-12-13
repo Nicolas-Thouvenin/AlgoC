@@ -59,7 +59,7 @@ int envoie_recois_message(int socketfd) {
   return envoyeur_recepteur_avec_msg(socketfd, "Votre message (max 900 caracteres): ", "message ");
 }
 int envoie_operateur_numeros(int socketfd) {
-  return envoyeur_recepteur_avec_msg(socketfd, "Votre calcul (operateur nombre1 nombre2) : ", "calcul ");
+  return envoyeur_recepteur_avec_msg(socketfd, "Votre calcul (operateur nombre1 nombre2 nombre3) : ", "calcul ");
 }
 int envoie_couleurs_tache1(int socketfd) {
   return envoyeur_recepteur_avec_msg(socketfd, "Vos couleurs (#HexCouleur1, #HexCouleur2 ...) : ", "couleurst1 ");

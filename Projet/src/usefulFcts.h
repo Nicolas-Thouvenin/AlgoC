@@ -11,5 +11,6 @@
 
 char *trim(char *);
 int isNumber(char *);
-
+int tri_bulles_min(float *);
+int tri_bulles_max(float *);
 #endif

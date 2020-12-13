@@ -110,22 +110,85 @@ int renvoie_balises(int client_socket_fd, char *vals) {
   return renvoie_message(client_socket_fd, data);
 }
 int renvoie_calcul(int client_socket_fd, char *vals) {
-  char operateur[1];
-  float n1;
-  float n2;
-  sscanf(vals, "%s %f %f", operateur, &n1, &n2);
-  float res;
+  char * delim = " ";
+  char operateur[20];
+  //printf("%s", vals);
+  char * token = strtok(vals, delim);
+  float numbers[100];
+  strcpy(operateur, token);
+  //printf("%s", operateur);
+  int numberCounter = 0;
+  token = strtok(NULL, delim);
+  while(token != NULL){
+    numbers[numberCounter] = strtof(token, NULL);
+    numberCounter++;
+    token = strtok(NULL, delim);
+  }
+  float res = numbers[0];
+  int i = 1;
   if (strcmp(operateur, "+") == 0){
-    res = n1 + n2;
+    for(i = 1; i < numberCounter; i++){
+      res += numbers[i];
+    }
   }
   else if (strcmp(operateur, "*") == 0){
-    res = n1 * n2;
+    for(i = 1; i < numberCounter; i++){
+      res *= numbers[i];
+    }
   }
   else if (strcmp(operateur, "-") == 0){
-    res = n1 - n2;
+    for(i = 1; i < numberCounter; i++){
+      res -= numbers[i];
+    }
   }
-  else{
-    res = n1 / n2;
+  else if (strcmp(operateur, "/") == 0){
+    for(i = 1; i < numberCounter; i++){
+      res /= numbers[i];
+    }
+  }
+  else if (strcmp(operateur, "moyenne") == 0){
+    for(i = 1; i < numberCounter; i++){
+      res += numbers[i];
+    }
+    res /= i;
+  }
+  else if (strcmp(operateur, "minimum") == 0){
+    float tmp;
+    for (int i=0 ; i < numberCounter-1; i++)
+    {
+        for (int j=0 ; j < numberCounter-i-1; j++)
+        {
+            if (numbers[j] > numbers[j+1]) 
+            {
+                tmp = numbers[j];
+                numbers[j] = numbers[j+1];
+                numbers[j+1] = tmp;
+            }
+        }
+    }
+    res = numbers[0];
+  }
+  else if (strcmp(operateur, "maximum") == 0){
+    float tmp;
+    for (int i=0 ; i < numberCounter-1; i++)
+    {
+        for (int j=0 ; j < numberCounter-i-1; j++)
+        {
+            if (numbers[j] < numbers[j+1]) 
+            {
+                tmp = numbers[j];
+                numbers[j] = numbers[j+1];
+                numbers[j+1] = tmp;
+            }
+        }
+    }
+    res = numbers[0];
+  }
+  else {
+    //ecart-type
+    for(int i = 0; i <= numberCounter; i++){
+      res += numbers[i];
+    }
   }
   char sRes[10];
   sprintf(sRes, "%f", res);
@@ -171,10 +234,11 @@ int recois_envoie_message(int socketfd) {
   printf ("Message recu: %s\n", data);
   const char * resValidation = datavalidator(data);
   if(resValidation == NULL){
-    printf("The JSON data is OK\n");
+    printf("The JSON data is OKKKKK\n");
     char code[10];
     char tabValues[1000];
     json_code_getter(data, code, tabValues);
+
     //printf("%s", code);
 
     //Si le message commence par le mot: 'message:' 

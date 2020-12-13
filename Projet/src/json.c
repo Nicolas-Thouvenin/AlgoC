@@ -18,13 +18,14 @@ void json_code_getter(char *data, char *code, char *tabVals){
     }
     else if(wordCounter >= 7 && strcmp(code, "calcul") == 0)
     {
-      delim = " ";
-      if(wordCounter == 9){
-        token[strlen(token)-1] = '\0';
+      if(wordCounter == 7){
         strcat(tabVals, token);
         strcat(tabVals, " ");
       }
-      else if(wordCounter == 10 || wordCounter == 7){
+      delim = " ";
+      if(wordCounter >= 9 && token[0] != ']'){
+        if(token[strlen(token)-1] == ',')
+        {token[strlen(token)-1] = '\0';}
         strcat(tabVals, token);
         strcat(tabVals, " ");
       }
@@ -38,7 +39,6 @@ void json_code_getter(char *data, char *code, char *tabVals){
     wordCounter++;
   }while(token != NULL);
   tabVals = trim(tabVals);
-  //printf("%s", tabVals);
 }
 
 

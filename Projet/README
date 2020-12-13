@@ -1,7 +1,7 @@
 # Objectif
 * Créer un serveur capable d'échanger avec plusieurs machines clients
 
-# Tâche 2
+# Tâche 3 
 
 # Bibliothèques
 * Bibliothèques standart + ctype.h pour utiliser la fonction isspace() qui aurait été longue a codée à la main et peu intéressante
@@ -10,8 +10,8 @@
 * Moyenne. La gestion des strings en C est une galère sans pareille.
 
 # Commentaires
-* Ajouts des fichiers json.c/h 
-* Le client et le serveur communique maintenant en format JSON (de manière explicit dans leurs utilisations)
+* Ajouts des fichiers usefulFcts.c/h validator.c/h
+* Le format JSON est désormais vérifier à la réception d'un message.
 * voir le fichier INSTALL pour savoir comment se servir des différentes fonctionnalités du code
 
 # Fichiers 
@@ -19,3 +19,5 @@
 * INSTALL : Description de la compilation et l'utilisation du code
 * json.c : librairie contruites pour les fonctions relatives au JSON pour que les fonctiones soient utilisables par le client et le serveur
 * json.h : header de json.c
+* userfulFcts : Quelques fonctions utilisées dans plusieurs endroits dans le code
+* validator : fichier pour la vérification de la data JSON
