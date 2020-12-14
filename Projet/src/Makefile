@@ -12,11 +12,10 @@ CFLAGS = -Wall -Wextra -g
 all: $(SERVER) $(CLIENT)
 
 $(SERVER): $(SOBJS)
-	$(CC) -o $(SERVER) $(SOBJS)
+	$(CC) -o $(SERVER) $(SOBJS) -lm
 
 $(CLIENT): $(COBJS)
-	$(CC) -o $(CLIENT) $(COBJS)
+	$(CC) -o $(CLIENT) $(COBJS) -lm
 
 .c.o: 
-	$(CC) -c $*.c 
-
+	$(CC) -c $*.c -lm

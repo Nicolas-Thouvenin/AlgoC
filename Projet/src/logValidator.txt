@@ -1,24 +1,16 @@
-ptr: { "code" : "calcul ", "valeurs" : [ "minimum", 2, 3, 55, 6, 33, 53, 1, 2, 3, 4, -4, 4 ]}
-ptr: { "code" : "calcul ", "valeurs" : [ "minimum", 2, 3, 55, 6, 33, 53, 1, 2, 3, 4, -4, 4 ]}
-ptr: "code" : "calcul ", "valeurs" : [ "minimum", 2, 3, 55, 6, 33, 53, 1, 2, 3, 4, -4, 4 ]}
-ptr: : "calcul ", "valeurs" : [ "minimum", 2, 3, 55, 6, 33, 53, 1, 2, 3, 4, -4, 4 ]}
-ptr: "calcul ", "valeurs" : [ "minimum", 2, 3, 55, 6, 33, 53, 1, 2, 3, 4, -4, 4 ]}
-ptr: "valeurs" : [ "minimum", 2, 3, 55, 6, 33, 53, 1, 2, 3, 4, -4, 4 ]}
-ptr: : [ "minimum", 2, 3, 55, 6, 33, 53, 1, 2, 3, 4, -4, 4 ]}
-ptr: "minimum", 2, 3, 55, 6, 33, 53, 1, 2, 3, 4, -4, 4 ]}
-ptr: "minimum", 2, 3, 55, 6, 33, 53, 1, 2, 3, 4, -4, 4
-values: "minimum", 2, 3, 55, 6, 33, 53, 1, 2, 3, 4, -4, 4
+ptr: { "code" : "calcul ", "valeurs" : [ "minimum", 2, 3, 4, 1 ]}
+ptr: { "code" : "calcul ", "valeurs" : [ "minimum", 2, 3, 4, 1 ]}
+ptr: "code" : "calcul ", "valeurs" : [ "minimum", 2, 3, 4, 1 ]}
+ptr: : "calcul ", "valeurs" : [ "minimum", 2, 3, 4, 1 ]}
+ptr: "calcul ", "valeurs" : [ "minimum", 2, 3, 4, 1 ]}
+ptr: "valeurs" : [ "minimum", 2, 3, 4, 1 ]}
+ptr: : [ "minimum", 2, 3, 4, 1 ]}
+ptr: "minimum", 2, 3, 4, 1 ]}
+ptr: "minimum", 2, 3, 4, 1
+values: "minimum", 2, 3, 4, 1
 token: "minimum"
 token: "minimum"
 token: 2
 token: 3
-token: 55
-token: 6
-token: 33
-token: 53
+token: 4
 token: 1
-token: 2
-token: 3
-token: 4
-token: -4
-token: 4

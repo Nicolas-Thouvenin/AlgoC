@@ -13,6 +13,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <math.h>
 
 #include "serveur.h"
 #include "json.h"
@@ -124,7 +125,7 @@ int renvoie_calcul(int client_socket_fd, char *vals) {
     numberCounter++;
     token = strtok(NULL, delim);
   }
-  float res = numbers[0];
+  double res = numbers[0];
   int i = 1;
   if (strcmp(operateur, "+") == 0){
     for(i = 1; i < numberCounter; i++){
@@ -186,12 +187,20 @@ int renvoie_calcul(int client_socket_fd, char *vals) {
   }
   else {
     //ecart-type
-    for(int i = 0; i <= numberCounter; i++){
-      res += numbers[i];
+    double ecart = 0.0;
+    int i;
+    for(i = 1; i < numberCounter; i++){
+        res += numbers[i];
     }
+    res /= i;
+
+    for (i = 0; i < numberCounter; ++i){
+        ecart += pow(numbers[i] - res, 2);
+    }
+    res = sqrt(ecart / numberCounter);
   }
   char sRes[10];
-  sprintf(sRes, "%f", res);
+  sprintf(sRes, "%lf", res);
   char data[1024];
   strcpy(data, sRes);
   return renvoie_message(client_socket_fd, data);
