@@ -5,13 +5,14 @@
 
 # Bibliothèques
 * Bibliothèques standart + ctype.h pour utiliser la fonction isspace() qui aurait été longue a codée à la main et peu intéressante
+* regex.h pour la validation si une string est un nombre
+* math.h pour avoir la fonction sqrt et pow pour le calcul de l'ecart-type
 
 # Difficulté
-* Moyenne. La gestion des strings en C est une galère sans pareille.
+* Faible. Cette tache était simple.
 
 # Commentaires
-* Ajouts des fichiers usefulFcts.c/h validator.c/h
-* Le format JSON est désormais vérifier à la réception d'un message.
+* Ajouts du calcul de la moyenne + maximum + minimum (tri bulle) + ecart type dans le serveur
 * voir le fichier INSTALL pour savoir comment se servir des différentes fonctionnalités du code
 
 # Fichiers 

@@ -22,17 +22,21 @@ Entrez la lettre de ce que vous souhaitez faire.
 
 ### Formats attendus des messages particuliers avec exemple :
 #### c : calcul
-Format : "operateur nombre1 nombre2"
-Exemple : "* 12 3"
+Format : operateur nombre1 nombre2
+Exemples : * 2 3 4 1 3 4 5 9 10 33 2 4 2
+           moyenne 2 3 4 1 3 4 5 9 10 33 2 4 2
+           ecart-type 2 3 4 1 3 4 5 9 10 33 2 4 2
+           maximum 2 3 4 1 3 4 5 9 10 33 2 4 2
+           minimum 2 3 4 1 3 4 5 9 10 33 2 4 2
 
 #### d : couleurs
-Format : "#HEXcouleur1, #HEXcouleur2, #HEXcouleur3..."
-Exemple : "#f00000, #FFFFFF"
+Format : #HEXcouleur1, #HEXcouleur2, #HEXcouleur3...
+Exemple : #f00000, #FFFFFF
 Enregistré dans le fichier : couleurs.txt
 
 #### e : balises
-Format : "#balise1, #balise2, #balise3..."
-Exemple : "#arbre, #nuit"
+Format : #balise1, #balise2, #balise3...
+Exemple : #arbre, #nuit
 Enregistré dans le fichier : balises.txt
 
 #### f : json
